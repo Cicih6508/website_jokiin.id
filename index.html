@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jokiin.ID — Jasa Tugas & Layanan IT</title>
+  <meta name="description" content="Jokiin.ID: Bantuan pengerjaan tugas, makalah, laporan PKL, website, dan coding untuk berbagai jenjang pendidikan. Tugas numpuk? Jokiin aja, beres tanpa panik." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ivory: '#F8F9FA',
+            brand: { DEFAULT: '#319795', dark: '#2C7A7B', light: '#E6FFFA' },
+          },
+          fontFamily: {
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body { background: #F8F9FA; font-family: 'Inter', sans-serif; color: #334155; }
+    h1, h2, h3, h4, .font-heading { font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; }
+
+    /* ============ HERO BACKGROUND + TRANSISI SCROLL ============ */
+    .hero {
+      --hero-img: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920&q=80');
+      background-color: #eaf6f5;
+      background-image:
+        linear-gradient(to bottom, rgba(248, 249, 250, .85) 0%, rgba(236, 249, 247, .78) 50%, rgba(248, 249, 250, .95) 85%, #F8F9FA 100%),
+        var(--hero-img);
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* ============ INTRO ANIMATION (Awal Masuk Web) ============ */
+    @keyframes introUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .intro { opacity: 0; animation: introUp .8s cubic-bezier(.22, 1, .36, 1) forwards; }
+    .intro-d1 { animation-delay: .10s; }
+    .intro-d2 { animation-delay: .22s; }
+    .intro-d3 { animation-delay: .35s; }
+    .intro-d4 { animation-delay: .48s; }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.22, 1, .36, 1); }
+    .reveal.show { opacity: 1; transform: none; }
+
+    /* ============ iOS BUTTONS ANIMATION ============ */
+    .btn-ios {
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      font-weight: 600; border-radius: 9999px; padding: .8rem 1.6rem;
+      transition: transform .18s cubic-bezier(.3, 1.4, .5, 1), box-shadow .25s ease, background-color .2s ease, filter .2s ease;
+      -webkit-tap-highlight-color: transparent; cursor: pointer; user-select: none;
+    }
+    .btn-primary { background: #319795; color: #fff; box-shadow: 0 4px 14px -2px rgba(49, 151, 149, .3); }
+    .btn-primary:hover { background: #2C7A7B; transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 26px -8px rgba(49, 151, 149, .45); }
+    .btn-outline { background: rgba(255, 255, 255, .8); color: #2C7A7B; border: 1px solid #b2e5df; backdrop-filter: blur(10px); }
+    .btn-outline:hover { background: #fff; transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 24px -10px rgba(49, 151, 149, .35); }
+    .btn-soft { background: #E6FFFA; color: #2C7A7B; }
+    .btn-soft:hover { background: #cdf7ef; transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 22px -10px rgba(49, 151, 149, .35); }
+    .btn-ios:active { transform: scale(.95) !important; box-shadow: 0 2px 6px -2px rgba(49, 151, 149, .25) !important; filter: brightness(.97); }
+    .btn-ios:focus-visible { outline: 3px solid rgba(49, 151, 149, .35); outline-offset: 2px; }
+
+    /* ============ NAVBAR ============ */
+    #navbar { background: rgba(255, 255, 255, .6); border-color: rgba(255, 255, 255, .8); transition: background-color .3s ease, box-shadow .3s ease, border-color .3s ease; }
+    #navbar.scrolled { background: rgba(255, 255, 255, .85); border-color: rgba(15, 23, 42, .06); box-shadow: 0 6px 26px -14px rgba(15, 23, 42, .15); }
+    .nav-link { position: relative; font-weight: 500; font-size: .92rem; color: #475569; transition: color .2s; }
+    .nav-link:hover { color: #319795; }
+    .nav-link::after { content: ''; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0; background: #319795; transition: width .25s ease; border-radius: 2px; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ============ CARDS & INPUTS ============ */
+    .card { background: #fff; border: 1px solid #eceff1; border-radius: 1.25rem; transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease, border-color .3s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -22px rgba(49, 151, 149, .4); border-color: #b2e5df; }
+    .input { width: 100%; background: #fff; border: 1px solid #e2e8f0; border-radius: .9rem; padding: .8rem 1rem; font-size: .95rem; color: #1e293b; transition: border-color .2s, box-shadow .2s; }
+    .input:focus { outline: none; border-color: #319795; box-shadow: 0 0 0 4px rgba(49, 151, 149, .14); }
+
+    .chip { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem 1rem; border-radius: 9999px; border: 1px solid #e2e8f0; background: #fff; font-weight: 500; font-size: .9rem; color: #475569; cursor: pointer; transition: all .2s cubic-bezier(.3, 1.4, .5, 1); user-select: none; }
+    .chip:hover { border-color: #319795; color: #2C7A7B; }
+    .chip:active { transform: scale(.95); }
+    .chip.active { background: #319795; border-color: #319795; color: #fff; box-shadow: 0 6px 16px -8px rgba(49, 151, 149, .7); }
+
+    .modal-backdrop { opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .modal-panel { transform: scale(.94) translateY(10px); transition: transform .35s cubic-bezier(.3, 1.3, .5, 1); }
+    .modal-backdrop.open .modal-panel { transform: none; }
+
+    /* progress steps */
+    .step-dot { transition: all .3s ease; }
+    .step-done .step-dot { background: #319795; border-color: #319795; color: #fff; }
+    .step-active .step-dot { border-color: #319795; color: #319795; animation: pulse 1s infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(49, 151, 149, .16); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+      .intro, .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!-- ================= NAVBAR ================= -->
+  <header id="navbar" class="fixed top-3 left-3 right-3 md:left-6 md:right-6 z-40 rounded-2xl border backdrop-blur-xl">
+    <nav class="max-w-6xl mx-auto flex items-center justify-between px-4 md:px-6 h-16">
+      <a href="#home" class="flex items-center gap-2 font-heading font-extrabold text-xl tracking-tight text-slate-800">
+        <span class="w-9 h-9 rounded-xl bg-brand text-white grid place-items-center text-base shadow-sm">J</span>
+        <span data-brand>Jokiin.ID</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About Us</a>
+        <a href="#how" class="nav-link">How To Order</a>
+        <a href="#contact" class="nav-link">Contact Us</a>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btnRegisterNav" class="btn-ios btn-primary !py-2 !px-4 text-sm">Daftar</button>
+        <button id="btnMenu" class="md:hidden w-10 h-10 grid place-items-center rounded-xl text-slate-700 active:scale-90 transition" aria-label="Menu">
+          <i data-icon="bars" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 pt-1">
+      <div class="flex flex-col gap-1 bg-white/95 rounded-xl p-2 text-slate-700 shadow-lg">
+        <a href="#home" class="mnav px-4 py-3 rounded-lg hover:bg-brand-light font-medium">Home</a>
+        <a href="#about" class="mnav px-4 py-3 rounded-lg hover:bg-brand-light font-medium">About Us</a>
+        <a href="#how" class="mnav px-4 py-3 rounded-lg hover:bg-brand-light font-medium">How To Order</a>
+        <a href="#contact" class="mnav px-4 py-3 rounded-lg hover:bg-brand-light font-medium">Contact Us</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="home" class="hero relative min-h-[100svh] flex items-center">
+    <div id="heroContent" class="max-w-3xl mx-auto px-6 pt-28 pb-40 w-full text-center will-change-transform">
+      <span class="intro intro-d1 inline-flex items-center gap-2 bg-white/85 border border-brand/20 backdrop-blur-md text-brand-dark text-xs md:text-sm font-medium px-4 py-1.5 rounded-full shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> Slot pengerjaan aktif & siap bantu
+      </span>
+
+      <h1 class="intro intro-d2 mt-6 text-4xl md:text-6xl font-extrabold leading-[1.1] text-slate-800">
+        Tugas Numpuk?<br />
+        <span class="text-brand" data-brand>Jokiin.ID</span> Aja, Beres Tanpa Panik.
+      </h1>
+
+      <p class="intro intro-d3 mt-5 text-slate-600 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+        Bantuan pengerjaan tugas sekolah, makalah, laporan PKL, website, hingga coding. Cepat, rapi, dan terpercaya.
+      </p>
+
+      <div class="intro intro-d4 mt-9 flex flex-wrap justify-center gap-3">
+        <a id="heroOrder" href="#order" class="btn-ios btn-primary text-base">
+          Order Sekarang <i data-icon="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#layanan" class="btn-ios btn-outline text-base">Lihat Layanan</a>
+      </div>
+
+      <div class="intro intro-d4 mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-slate-600">
+        <span class="inline-flex items-center gap-2"><i data-icon="clock" class="w-5 h-5 text-brand"></i> Deadline Terjaga</span>
+        <span class="inline-flex items-center gap-2"><i data-icon="shield" class="w-5 h-5 text-brand"></i> Data 100% Aman</span>
+        <span class="inline-flex items-center gap-2"><i data-icon="chat" class="w-5 h-5 text-brand"></i> Konfirmasi via WhatsApp</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="relative -mt-16 z-10">
+
+    <!-- ================= ABOUT US ================= -->
+    <section id="about" class="max-w-4xl mx-auto px-6 py-20 text-center">
+      <div class="reveal">
+        <p class="text-brand font-semibold text-sm tracking-wide uppercase">About Us</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-extrabold">Solusi Pintar Tugas Beres</h2>
+        <p class="mt-4 text-slate-600 leading-relaxed max-w-2xl mx-auto">
+          <span data-brand>Jokiin.ID</span> hadir sebagai platform andalan pelajar dan mahasiswa untuk menuntaskan berbagai beban tugas akademik serta proyek IT. Dikerjakan secara profesional dengan komunikasi yang transparan via WhatsApp.
+        </p>
+      </div>
+      <div class="mt-10 grid sm:grid-cols-3 gap-5 text-left">
+        <div class="card p-6 reveal">
+          <span class="w-11 h-11 rounded-xl bg-brand-light text-brand grid place-items-center"><i data-icon="target" class="w-6 h-6"></i></span>
+          <h3 class="mt-4 font-bold">Sesuai Brief</h3>
+          <p class="text-sm text-slate-500 mt-1">Dikerjakan teliti mengikuti instruksi dan format dari dosen/guru.</p>
+        </div>
+        <div class="card p-6 reveal">
+          <span class="w-11 h-11 rounded-xl bg-brand-light text-brand grid place-items-center"><i data-icon="clock" class="w-6 h-6"></i></span>
+          <h3 class="mt-4 font-bold">Tepat Waktu</h3>
+          <p class="text-sm text-slate-500 mt-1">Komitmen tinggi menjaga deadline pengumpulan tugasmu.</p>
+        </div>
+        <div class="card p-6 reveal">
+          <span class="w-11 h-11 rounded-xl bg-brand-light text-brand grid place-items-center"><i data-icon="shield" class="w-6 h-6"></i></span>
+          <h3 class="mt-4 font-bold">Privasi Terjaga</h3>
+          <p class="text-sm text-slate-500 mt-1">Kerahasiaan identitas dan file kamu dijamin aman.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LAYANAN ================= -->
+    <section id="layanan" class="max-w-6xl mx-auto px-6 py-16">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <p class="text-brand font-semibold text-sm tracking-wide uppercase">Katalog Layanan</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-extrabold">Pilih Jenis Tugasmu</h2>
+        <p class="mt-3 text-slate-600">Dari tugas individu, makalah, laporan magang, hingga proyek pemrograman web.</p>
+      </div>
+      <div id="catalog" class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-center"></div>
+    </section>
+
+    <!-- ================= INSTANSI ================= -->
+    <section id="instansi" class="max-w-5xl mx-auto px-6 py-16">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <p class="text-brand font-semibold text-sm tracking-wide uppercase">Jenjang Instansi</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-extrabold">Pilih Asal Instansimu</h2>
+        <p class="mt-3 text-slate-600">Kami melayani berbagai tingkat pendidikan mulai dari sekolah menengah hingga universitas.</p>
+      </div>
+      <div id="instansiGrid" class="mt-10 grid grid-cols-2 md:grid-cols-5 gap-4"></div>
+    </section>
+
+    <!-- ================= HOW TO ORDER ================= -->
+    <section id="how" class="max-w-6xl mx-auto px-6 py-16">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <p class="text-brand font-semibold text-sm tracking-wide uppercase">How To Order</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-extrabold">4 Langkah Mudah Bereskan Tugas</h2>
+      </div>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="card p-6 reveal"><span class="w-10 h-10 rounded-xl bg-brand-light text-brand grid place-items-center font-bold">1</span><h3 class="mt-4 font-bold">Registrasi Kilat</h3><p class="text-sm text-slate-500 mt-1">Cukup masukkan nama dan nomor WhatsApp aktifmu.</p></div>
+        <div class="card p-6 reveal"><span class="w-10 h-10 rounded-xl bg-brand-light text-brand grid place-items-center font-bold">2</span><h3 class="mt-4 font-bold">Isi Form Order</h3><p class="text-sm text-slate-500 mt-1">Pilih layanan, deadline, dan upload file soal/pendukung.</p></div>
+        <div class="card p-6 reveal"><span class="w-10 h-10 rounded-xl bg-brand-light text-brand grid place-items-center font-bold">3</span><h3 class="mt-4 font-bold">Konfirmasi WA</h3><p class="text-sm text-slate-500 mt-1">Data otomatis masuk ke sistem & lanjut diskusi via WhatsApp.</p></div>
+        <div class="card p-6 reveal"><span class="w-10 h-10 rounded-xl bg-brand-light text-brand grid place-items-center font-bold">4</span><h3 class="mt-4 font-bold">Tugas Beres</h3><p class="text-sm text-slate-500 mt-1">Terima hasil kerjaan tepat waktu dan siap kumpul.</p></div>
+      </div>
+    </section>
+
+    <!-- ================= FORM ORDER ================= -->
+    <section id="order" class="max-w-3xl mx-auto px-6 py-16">
+      <div class="text-center reveal">
+        <p class="text-brand font-semibold text-sm tracking-wide uppercase">Formulir Pemesanan</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-extrabold">Kirim Detail Tugasmu</h2>
+        <p class="mt-3 text-slate-600">Isi form di bawah ini, data akan langsung tersimpan ke database sistem.</p>
+      </div>
+
+      <form id="orderForm" class="card p-6 md:p-8 mt-8 space-y-5 reveal" novalidate>
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="fName">Nama Lengkap</label>
+            <input id="fName" name="fName" class="input" placeholder="Masukkan nama kamu" required />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="fWa">Nomor WhatsApp</label>
+            <input id="fWa" name="fWa" class="input" inputmode="tel" placeholder="08xxxxxxxxxx" required />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-2 text-slate-700">Pilih Instansi</label>
+          <div id="instansiChips" class="flex flex-wrap gap-2"></div>
+          <input id="fSchool" name="fSchool" class="input mt-3" placeholder="Nama sekolah / kampus spesifik (opsional)" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="fService">Pilih Layanan / Paket</label>
+          <select id="fService" name="fService" class="input" required></select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="fDetail">Detail & Instruksi Tugas</label>
+          <textarea id="fDetail" name="fDetail" rows="5" class="input" placeholder="Jelaskan detail tugas secara lengkap (topik, jumlah halaman, format, ketentuan khusus, dll.)" required></textarea>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="fDeadline">Target Deadline</label>
+            <input id="fDeadline" name="fDeadline" type="datetime-local" class="input" required />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="fExpress">Kecepatan Pengerjaan</label>
+            <select id="fExpress" name="fExpress" class="input">
+              <option value="Reguler">Reguler</option>
+              <option value="Express (&lt; 24 jam)">Express (&lt; 24 jam)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5 text-slate-700">File Pendukung / Soal <span class="text-slate-400 font-normal">(opsional)</span></label>
+          <label id="dropzone" for="fFiles" class="flex flex-col items-center justify-center text-center border-2 border-dashed border-slate-300 rounded-2xl py-8 px-4 cursor-pointer hover:border-brand hover:bg-brand-light/40 transition">
+            <i data-icon="upload" class="w-8 h-8 text-brand"></i>
+            <p class="mt-2 text-sm font-medium text-slate-700">Klik atau seret file ke sini</p>
+            <p class="text-xs text-slate-400">PDF, DOCX, PPTX, ZIP, Gambar, dll.</p>
+          </label>
+          <input id="fFiles" name="fFiles[]" type="file" multiple class="hidden" />
+          <ul id="fileList" class="mt-3 space-y-2"></ul>
+        </div>
+
+        <p id="formError" class="hidden text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-4 py-2.5"></p>
+
+        <button type="submit" class="btn-ios btn-primary w-full text-base">Kirim Order Sekarang</button>
+      </form>
+    </section>
+
+    <!-- ================= CONTACT US ================= -->
+    <section id="contact" class="max-w-6xl mx-auto px-6 py-16 pb-24">
+      <div class="text-center max-w-2xl mx-auto reveal">
+        <p class="text-brand font-semibold text-sm tracking-wide uppercase">Contact Us</p>
+        <h2 class="mt-2 text-3xl md:text-4xl font-extrabold">Butuh Bantuan Cepat? Hubungi Kami</h2>
+      </div>
+      <div class="mt-10 grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+        <a id="contactWa" target="_blank" rel="noopener" class="card card-hover p-6 flex items-center gap-4 reveal">
+          <span class="w-12 h-12 rounded-2xl bg-brand-light text-brand grid place-items-center"><i data-icon="chat" class="w-6 h-6"></i></span>
+          <div><p class="text-xs text-slate-400">WhatsApp Official</p><p id="contactWaText" class="font-bold text-slate-800"></p></div>
+        </a>
+        <a id="contactMail" class="card card-hover p-6 flex items-center gap-4 reveal">
+          <span class="w-12 h-12 rounded-2xl bg-brand-light text-brand grid place-items-center"><i data-icon="mail" class="w-6 h-6"></i></span>
+          <div><p class="text-xs text-slate-400">Email Dukungan</p><p id="contactMailText" class="font-bold text-slate-800 break-all"></p></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-8 text-center text-sm text-slate-500">
+      &copy; <span id="year"></span> <span data-brand>Jokiin.ID</span>. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ================= MODAL REGISTRASI ================= -->
+  <div id="regModal" class="modal-backdrop fixed inset-0 z-50 bg-slate-900/30 backdrop-blur-sm grid place-items-center p-4" aria-hidden="true">
+    <div class="modal-panel bg-white w-full max-w-md rounded-3xl p-7 shadow-2xl relative">
+      <button id="regClose" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 active:scale-90 transition grid place-items-center text-slate-500" aria-label="Tutup">
+        <i data-icon="x" class="w-4 h-4"></i>
+      </button>
+      <span class="w-12 h-12 rounded-2xl bg-brand text-white grid place-items-center font-heading font-extrabold text-lg shadow-sm">J</span>
+      <h3 class="mt-4 text-2xl font-extrabold">Daftar Dulu, Yuk</h3>
+      <p class="text-sm text-slate-500 mt-1">Cukup masukkan nama dan nomor WhatsApp aktifmu.</p>
+      <form id="regForm" class="mt-6 space-y-4" novalidate>
+        <div>
+          <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="rName">Nama Lengkap</label>
+          <input id="rName" class="input" placeholder="Masukkan nama kamu" required />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1.5 text-slate-700" for="rWa">Nomor WhatsApp</label>
+          <input id="rWa" class="input" inputmode="tel" placeholder="08xxxxxxxxxx" required />
+        </div>
+        <p id="regError" class="hidden text-sm text-red-600"></p>
+        <button type="submit" class="btn-ios btn-primary w-full">Daftar & Lanjut</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= MODAL PROSES ORDER ================= -->
+  <div id="procModal" class="modal-backdrop fixed inset-0 z-50 bg-slate-900/30 backdrop-blur-sm grid place-items-center p-4" aria-hidden="true">
+    <div class="modal-panel bg-white w-full max-w-md rounded-3xl p-7 shadow-2xl">
+      <h3 id="procTitle" class="text-xl font-extrabold">Memproses Order...</h3>
+      <p id="procSub" class="text-sm text-slate-500 mt-1">Mohon tunggu sebentar, data sedang dikirim ke sistem.</p>
+      <ol id="procSteps" class="mt-6 space-y-4"></ol>
+      <div id="procDone" class="hidden mt-7">
+        <div class="rounded-2xl bg-brand-light text-brand-dark px-4 py-3 text-sm">
+          Status: <b id="procStatusText">Berhasil!</b><br />Data & file tugas sudah masuk ke database. Lanjutkan konfirmasi via WhatsApp.
+        </div>
+        <a id="procWa" target="_blank" rel="noopener" class="btn-ios btn-primary w-full mt-4">Konfirmasi via WhatsApp Sekarang</a>
+        <button id="procClose" class="btn-ios btn-soft w-full mt-2">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Utama -->
+  <script>
+    const CONFIG = {
+      BRAND: 'Jokiin.ID',
+      WA_NUMBER: '6281234567890',      // Ganti dengan nomor WhatsApp lo (format 62)
+      WA_DISPLAY: '+62 812-3456-7890',  // Tampilan nomor WA di web
+      ADMIN_EMAIL: 'jokiin.id@gmail.com',// Email tujuan notifikasi
+    };
+
+    /* Katalog Layanan Termasuk Paket Bundling */
+    const SERVICES = [
+      { name: 'Tugas Individu / PR', icon: 'pencil', desc: 'Esai, ringkasan, latihan soal, dan studi kasus harian.' },
+      { name: 'Makalah & Karya Ilmiah', icon: 'doc', desc: 'Pembuatan makalah lengkap dari bab 1 hingga daftar pustaka rapi.' },
+      { name: 'Laporan PKL / Magang', icon: 'briefcase', desc: 'Penyusunan laporan praktik kerja lapangan atau magang industri.' },
+      { name: 'Jasa Pembuatan Website', icon: 'globe', desc: 'Landing page, company profile, atau tugas web development.' },
+      { name: 'Coding & Algoritma', icon: 'code', desc: 'Tugas pemrograman Python, PHP, Java, database, dan debugging.' },
+      { name: '📦 Paket Bundling: Makalah + PPT', icon: 'slides', desc: 'Combo hemat: File makalah lengkap + slide presentasi PowerPoint siap pakai.' },
+      { name: '📦 Paket Bundling: Coding + Flowchart', icon: 'code', desc: 'Combo IT: Source code program lengkap + diagram flowchart dan dokumentasi.' }
+    ];
+
+    /* Instansi */
+    const INSTANSI = [
+      { name: 'SD / SMP', icon: 'school' },
+      { name: 'SMA / SMK', icon: 'school' },
+      { name: 'Universitas (D3/S1)', icon: 'cap' },
+      { name: 'Politeknik / Vokasi', icon: 'office' },
+      { name: 'Lainnya', icon: 'dots' },
+    ];
+
+    /* Kumpulan Icon SVG */
+    const ICONS = {
+      bars: 'M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5',
+      x: 'M6 18 18 6M6 6l12 12',
+      check: 'm4.5 12.75 6 6 9-13.5',
+      'arrow-right': 'M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3',
+      clock: 'M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+      shield: 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
+      chat: 'M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155',
+      mail: 'M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75',
+      upload: 'M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5',
+      target: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-5.25a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z',
+      pencil: 'm16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10',
+      doc: 'M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z',
+      briefcase: 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z',
+      globe: 'M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418',
+      code: 'M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5',
+      slides: 'M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25m-4.5-13.5h16.5m-16.5 0H3m17.25 0V14.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5',
+      school: 'M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z',
+      cap: 'M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5',
+      office: 'M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21',
+      book: 'M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25',
+      dots: 'M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+    };
+
+    const icon = (name, cls = 'w-5 h-5') =>
+      `<svg class="${cls}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name] || ''}"/></svg>`;
+    const hydrateIcons = (root = document) => root.querySelectorAll('[data-icon]').forEach(el => {
+      el.outerHTML = icon(el.dataset.icon, el.getAttribute('class') || 'w-5 h-5');
+    });
+
+    const $ = (s, el = document) => el.querySelector(s);
+    const getUser = () => { try { return JSON.parse(localStorage.getItem('jokiin_user')); } catch { return null; } };
+    const saveUser = u => { try { localStorage.setItem('jokiin_user', JSON.stringify(u)); } catch {} };
+    const normalizeWa = v => { let n = v.replace(/[^\d]/g, ''); if (n.startsWith('0')) n = '62' + n.slice(1); return n; };
+    const validWa = v => /^62\d{8,13}$/.test(normalizeWa(v));
+
+    document.querySelectorAll('[data-brand]').forEach(el => el.textContent = CONFIG.BRAND);
+    document.title = `${CONFIG.BRAND} — Jasa Tugas & Layanan IT`;
+    $('#year').textContent = new Date().getFullYear();
+    $('#contactWa').href = `https://wa.me/${CONFIG.WA_NUMBER}`;
+    $('#contactWaText').textContent = CONFIG.WA_DISPLAY;
+    $('#contactMail').href = `mailto:${CONFIG.ADMIN_EMAIL}`;
+    $('#contactMailText').textContent = CONFIG.ADMIN_EMAIL;
+
+    /* Render Katalog */
+    const catalogEl = $('#catalog');
+    SERVICES.forEach(s => {
+      catalogEl.insertAdjacentHTML('beforeend', `
+        <div class="card card-hover p-6 flex flex-col justify-between reveal">
+          <div>
+            <span class="w-12 h-12 rounded-2xl bg-brand-light text-brand grid place-items-center mb-4">${icon(s.icon, 'w-6 h-6')}</span>
+            <h3 class="font-bold text-lg text-slate-800">${s.name}</h3>
+            <p class="text-sm text-slate-500 mt-2 leading-relaxed">${s.desc}</p>
+          </div>
+          <button type="button" onclick="selectService('${s.name}')" class="btn-ios btn-soft w-full mt-6 text-sm">Pilih Layanan</button>
+        </div>
+      `);
+    });
+
+    /* Render Instansi & Chips */
+    const instansiGrid = $('#instansiGrid');
+    const instansiChips = $('#instansiChips');
+    let selectedInstansi = '';
+
+    INSTANSI.forEach(i => {
+      instansiGrid.insertAdjacentHTML('beforeend', `
+        <div class="card p-5 text-center reveal cursor-pointer hover:border-brand transition" onclick="setInstansi('${i.name}')">
+          <span class="w-10 h-10 mx-auto rounded-xl bg-brand-light text-brand grid place-items-center mb-3">${icon(i.icon)}</span>
+          <span class="font-semibold text-sm text-slate-700">${i.name}</span>
+        </div>
+      `);
+      instansiChips.insertAdjacentHTML('beforeend', `
+        <button type="button" class="chip" data-instansi="${i.name}" onclick="setInstansi('${i.name}')">
+          ${icon(i.icon, 'w-4 h-4')} ${i.name}
+        </button>
+      `);
+    });
+
+    window.setInstansi = name => {
+      selectedInstansi = name;
+      document.querySelectorAll('#instansiChips .chip').forEach(c => {
+        if (c.dataset.instansi === name) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+      $('#fSchool').value = name;
+    };
+
+    /* Render Dropdown Layanan di Form */
+    const fService = $('#fService');
+    SERVICES.forEach(s => {
+      fService.insertAdjacentHTML('beforeend', `<option value="${s.name}">${s.name}</option>`);
+    });
+
+    window.selectService = name => {
+      fService.value = name;
+      document.getElementById('order').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    /* File Upload Handler */
+    const fFiles = $('#fFiles'), fileList = $('#fileList');
+    let uploadedFiles = [];
+    fFiles.addEventListener('change', e => {
+      uploadedFiles = Array.from(e.target.files);
+      fileList.innerHTML = '';
+      uploadedFiles.forEach((file, idx) => {
+        fileList.insertAdjacentHTML('beforeend', `
+          <li class="flex items-center justify-between text-sm bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl">
+            <span class="truncate max-w-[240px] text-slate-700 font-medium">${file.name}</span>
+            <button type="button" onclick="removeFile(${idx})" class="text-red-500 hover:text-red-700 text-xs font-semibold">Hapus</button>
+          </li>
+        `);
+      });
+    });
+    window.removeFile = idx => {
+      uploadedFiles.splice(idx, 1);
+      const dt = new DataTransfer();
+      uploadedFiles.forEach(f => dt.items.add(f));
+      fFiles.files = dt.files;
+      fFiles.dispatchEvent(new Event('change'));
+    };
+
+    /* Modal Registrasi & Cek User */
+    const regModal = $('#regModal');
+    $('#btnRegisterNav').addEventListener('click', () => {
+      regModal.classList.add('open');
+      $('#rName').focus();
+    });
+    $('#regClose').addEventListener('click', () => regModal.classList.remove('open'));
+
+    $('#regForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = $('#rName').value.trim();
+      const wa = $('#rWa').value.trim();
+      const err = $('#regError');
+
+      if (!name || !wa) {
+        err.textContent = 'Semua kolom wajib diisi.';
+        err.classList.remove('hidden');
+        return;
+      }
+      if (!validWa(wa)) {
+        err.textContent = 'Nomor WhatsApp tidak valid (contoh: 08123456789).';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      err.classList.add('hidden');
+      const userData = { name, wa: normalizeWa(wa) };
+      saveUser(userData);
+      regModal.classList.remove('open');
+      $('#fName').value = userData.name;
+      $('#fWa').value = userData.wa;
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const u = getUser();
+      if (u) {
+        $('#fName').value = u.name;
+        $('#fWa').value = u.wa;
+      }
+    });
+
+    const orderForm = $('#orderForm'), procModal = $('#procModal'), procSteps = $('#procSteps');
+    orderForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = $('#fName').value.trim();
+      const wa = $('#fWa').value.trim();
+      const school = $('#fSchool').value.trim();
+      const service = $('#fService').value;
+      const detail = $('#fDetail').value.trim();
+      const deadline = $('#fDeadline').value;
+      const express = $('#fExpress').value;
+      const formError = $('#formError');
+
+      if (!name || !wa || !service || !detail || !deadline) {
+        formError.textContent = 'Mohon lengkapi semua data wajib pada formulir.';
+        formError.classList.remove('hidden');
+        orderForm.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      if (!validWa(wa)) {
+        formError.textContent = 'Nomor WhatsApp tidak valid.';
+        formError.classList.remove('hidden');
+        return;
+      }
+
+      formError.classList.add('hidden');
+      saveUser({ name, wa: normalizeWa(wa) });
+
+      // Tampilkan Modal Proses
+      procModal.classList.add('open');
+      $('#procDone').classList.add('hidden');
+      $('#procTitle').textContent = 'Memproses Order...';
+      $('#procSub').textContent = 'Mengirim data ke database dan server.';
+      
+      procSteps.innerHTML = `
+        <li class="flex items-center gap-3 text-sm text-slate-700 step-active" id="step1">
+          <span class="w-6 h-6 rounded-full border-2 border-brand grid place-items-center text-xs step-dot">1</span> Menyimpan data & upload file ke server...
+        </li>
+      `;
+
+      try {
+        const formData = new FormData(orderForm);
+        const response = await fetch('process_order.php', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          $('#step1').classList.remove('step-active');
+          $('#step1').classList.add('step-done');
+          
+          $('#procTitle').textContent = 'Order Berhasil Disimpan!';
+          $('#procSub').textContent = 'Data telah masuk ke database MySQL.';
+
+          const waText = `Halo Admin ${CONFIG.BRAND}, saya baru saja mengirim order tugas melalui website:\n\n*Nama:* ${name}\n*No WA:* ${wa}\n*Instansi:* ${school || 'Umum'}\n*Layanan:* ${service} (${express})\n*Deadline:* ${deadline}\n\n*Detail Tugas:*\n${detail}\n\nTolong info estimasi harganya ya kak. Terima kasih!`;
+          $('#procWa').href = `https://wa.me/${CONFIG.WA_NUMBER}?text=${encodeURIComponent(waText)}`;
+          $('#procDone').classList.remove('hidden');
+        } else {
+          alert('Gagal: ' + result.message);
+          procModal.classList.remove('open');
+        }
+      } catch (err) {
+        alert('Terjadi kesalahan koneksi ke server PHP.');
+        procModal.classList.remove('open');
+      }
+    });
+
+    $('#procClose').addEventListener('click', () => procModal.classList.remove('open'));
+
+    /* Mobile Menu Toggle */
+    const btnMenu = $('#btnMenu'), mobileMenu = $('#mobileMenu');
+    btnMenu.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    document.querySelectorAll('.mnav').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    /* Scroll Effects & Observer */
+    window.addEventListener('scroll', () => {
+      const nav = $('#navbar');
+      if (window.scrollY > 30) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    hydrateIcons();
+  </script>
+</body>
+</html>
